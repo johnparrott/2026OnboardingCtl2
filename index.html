@@ -1629,6 +1629,51 @@
     }
 
 
+
+    .practice-section.practice-section-secondary {
+      background: #ffffff;
+      padding-top: 104px;
+      border-top: 1px solid #ededf0;
+    }
+
+    .practice-section-secondary .practice-inner {
+      grid-template-columns: minmax(380px, 1.1fr) minmax(0, .9fr);
+    }
+
+    .practice-section-secondary .practice-demo-wrap {
+      order: 1;
+    }
+
+    .practice-section-secondary .practice-copy {
+      order: 2;
+      justify-self: end;
+    }
+
+    .practice-section-secondary .practice-lock-view {
+      background: #eef2f7;
+    }
+
+    .practice-section-secondary .practice-lock-wallpaper {
+      background-image:
+        linear-gradient(180deg, rgba(16, 28, 55, .08), rgba(16, 28, 55, .15)),
+        url("https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    @media (max-width: 860px) {
+      .practice-section-secondary .practice-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .practice-section-secondary .practice-demo-wrap,
+      .practice-section-secondary .practice-copy {
+        order: initial;
+        justify-self: auto;
+      }
+    }
+
     .team-section {
       width: 100vw;
       margin-left: calc(50% - 50vw);
@@ -2141,6 +2186,96 @@
       </section>
     </div>
   
+
+      <section class="practice-section practice-section-secondary" aria-labelledby="practiceReportTitle">
+        <div class="practice-inner">
+          <div class="practice-demo-wrap reveal-on-scroll reveal-delay-2">
+            <div class="practice-demo is-idle" id="practiceReportDemo">
+              <div class="practice-demo-view practice-lock-view is-active" id="practiceReportLockView" aria-hidden="false">
+                <div class="practice-lock-wallpaper" aria-hidden="true"></div>
+                <div class="practice-lock-top">
+                  <p class="practice-lock-date">Tuesday, August 18</p>
+                  <p class="practice-lock-time">3:15</p>
+                </div>
+
+                <div class="practice-lock-notifications">
+                  <button class="practice-notification" id="practiceReportNotification" type="button" aria-label="Open Survey Signal text message">
+                    <span class="practice-notification-icon" aria-hidden="true">SS</span>
+                    <span class="practice-notification-copy">
+                      <span class="practice-notification-title">Survey Signal</span>
+                      <span class="practice-notification-text">It’s time to complete your Photo Session Report.</span>
+                    </span>
+                    <span class="practice-notification-time">now</span>
+                  </button>
+                </div>
+
+                <div class="practice-lock-spacer" aria-hidden="true"></div>
+              </div>
+
+              <div class="practice-demo-view practice-message-view" id="practiceReportMessagesView" aria-hidden="true">
+                <div class="practice-message-header">
+                  <div class="practice-message-avatar" aria-hidden="true">SS</div>
+                  <div class="practice-message-sender">
+                    <strong>Survey Signal</strong>
+                    <span>Text Message</span>
+                  </div>
+                </div>
+
+                <div class="practice-message-body">
+                  <div class="practice-message-time">Today · 3:15 PM</div>
+                  <div class="practice-message-bubble">
+                    <p>
+                      Hi! It’s time to complete your Photo Session Report. Please use the link below when you’re ready.<br><br>
+                      <a class="practice-message-link" id="openPracticeReportSurvey" href="https://cgu.co1.qualtrics.com/jfe/form/SV_3Q7Hvx4xnMzCHYO?Q_DONT_SAVE=1">cgu.co1.qualtrics.com/jfe/form/SV_3Q7Hvx4xnMzCHYO</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="practice-demo-view practice-survey-view" id="practiceReportSurveyView" aria-hidden="true">
+                <div class="practice-survey-header">
+                  <button class="practice-survey-back" id="closePracticeReportSurvey" type="button" aria-label="Return to text message">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M14.7 5.2 7.9 12l6.8 6.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <div class="practice-survey-domain">cgu.co1.qualtrics.com</div>
+                  <span aria-hidden="true"></span>
+                </div>
+
+                <div class="practice-survey-frame-wrap">
+                  <iframe
+                    class="practice-survey-frame"
+                    id="practiceReportSurveyFrame"
+                    title="Practice Photo Session Report survey"
+                    src="https://cgu.co1.qualtrics.com/jfe/form/SV_3Q7Hvx4xnMzCHYO?Q_DONT_SAVE=1"
+                    data-src="https://cgu.co1.qualtrics.com/jfe/form/SV_3Q7Hvx4xnMzCHYO?Q_DONT_SAVE=1"
+                    allow="camera; microphone; clipboard-read; clipboard-write">
+                  </iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="practice-copy">
+            <h2 class="practice-title reveal-on-scroll" id="practiceReportTitle">Practice Photo Session Report</h2>
+            <p class="practice-description reveal-on-scroll reveal-delay-1">After each photo session, you’ll receive a text inviting you to complete a short Photo Session Report. Try the practice version here: start the simulation, tap the notification, open the link in the message, and move through the report just as you would during the study.</p>
+            <p class="practice-note reveal-on-scroll reveal-delay-2">
+              <svg class="practice-note-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8.5"></circle>
+                <path d="M12 10.6v5.1"></path>
+                <path d="M12 7.7h.01"></path>
+              </svg>
+              Practice responses are not saved.
+            </p>
+            <div class="practice-actions reveal-on-scroll reveal-delay-3">
+              <button class="practice-start-button" id="startPracticeReport" type="button">Start Practice Photo Session Report</button>
+              <button class="practice-restart-button" id="restartPracticeReport" type="button" hidden>Start Over</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="team-section" aria-labelledby="studyTeamTitle">
         <div class="team-inner">
           <div class="team-intro">
@@ -3061,6 +3196,76 @@
 
     closePracticeSurvey.addEventListener("click", () => {
       setPracticeView("messages");
+    });
+
+
+    const practiceReportLockView = document.getElementById("practiceReportLockView");
+    const practiceReportMessagesView = document.getElementById("practiceReportMessagesView");
+    const practiceReportSurveyView = document.getElementById("practiceReportSurveyView");
+    const practiceReportNotification = document.getElementById("practiceReportNotification");
+    const openPracticeReportSurvey = document.getElementById("openPracticeReportSurvey");
+    const closePracticeReportSurvey = document.getElementById("closePracticeReportSurvey");
+    const practiceReportSurveyFrame = document.getElementById("practiceReportSurveyFrame");
+    const practiceReportDemo = document.getElementById("practiceReportDemo");
+    const startPracticeReport = document.getElementById("startPracticeReport");
+    const restartPracticeReport = document.getElementById("restartPracticeReport");
+    const practiceReportSurveyUrl = practiceReportSurveyFrame.dataset.src;
+
+    function setPracticeReportView(view) {
+      const views = {
+        lock: practiceReportLockView,
+        messages: practiceReportMessagesView,
+        survey: practiceReportSurveyView
+      };
+
+      Object.entries(views).forEach(([name, element]) => {
+        const active = name === view;
+        element.classList.toggle("is-active", active);
+        element.setAttribute("aria-hidden", String(!active));
+      });
+    }
+
+    function startPracticeReportFlow() {
+      practiceReportDemo.classList.remove("is-idle");
+      practiceReportDemo.classList.add("is-started");
+      practiceReportDemo.classList.remove("notification-ready");
+      restartPracticeReport.hidden = false;
+      setPracticeReportView("lock");
+
+      window.setTimeout(() => {
+        practiceReportDemo.classList.add("notification-ready");
+      }, 500);
+    }
+
+    function resetPracticeReportFlow() {
+      practiceReportDemo.classList.remove("is-started", "notification-ready");
+      practiceReportDemo.classList.add("is-idle");
+      restartPracticeReport.hidden = true;
+      setPracticeReportView("lock");
+      practiceReportSurveyFrame.src = practiceReportSurveyUrl + "&practice_restart=" + Date.now();
+    }
+
+    startPracticeReport.addEventListener("click", () => {
+      startPracticeReportFlow();
+      practiceReportDemo.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    restartPracticeReport.addEventListener("click", () => {
+      resetPracticeReportFlow();
+      practiceReportDemo.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    practiceReportNotification.addEventListener("click", () => {
+      setPracticeReportView("messages");
+    });
+
+    openPracticeReportSurvey.addEventListener("click", (event) => {
+      event.preventDefault();
+      setPracticeReportView("survey");
+    });
+
+    closePracticeReportSurvey.addEventListener("click", () => {
+      setPracticeReportView("messages");
     });
 
   </script>
