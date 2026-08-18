@@ -1,0 +1,3067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2026 Study of Photography Experiences</title>
+  <!-- Practice Reflection Log build: v2-fixed-2026-08-18 -->
+  <style>
+    :root {
+      --text: #1d1d1f;
+      --muted: #6e6e73;
+      --line: #d2d2d7;
+      --soft-line: #e8e8ed;
+      --footer: #f5f5f7;
+      --bg: #ffffff;
+      --accent-blue: #1d1d1f;
+      --danger-red: #ff3b30;
+      --site-max-width: 1120px;
+      --gallery-control-bg: rgba(0, 0, 0, .58);
+      --gallery-control-text: #ffffff;
+      --gallery-control-height: 38px;
+      --gallery-control-blur: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    button { font: inherit; }
+
+    .page {
+      min-height: 100vh;
+      background: #fff;
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+      background: #111;
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: url("https://images.pexels.com/photos/11973344/pexels-photo-11973344.jpeg") center center / cover no-repeat;
+      transform: scale(1);
+      animation: heroSlowZoom 12s cubic-bezier(.16, 1, .3, 1) forwards;
+      will-change: transform;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.20) 42%, rgba(0,0,0,.62) 100%);
+      pointer-events: none;
+    }
+
+    @keyframes heroSlowZoom {
+      from { transform: scale(1); }
+      to { transform: scale(1.105); }
+    }
+
+    .hero-inner {
+      width: 100%;
+      max-width: var(--site-max-width);
+      margin: 0 auto;
+      padding: 48px 48px 68px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-lockup {
+      max-width: 980px;
+    }
+
+    .hero-eyebrow {
+      margin: 0 0 18px;
+      color: #fff;
+      font-size: clamp(28px, 3vw, 42px);
+      line-height: 1;
+      letter-spacing: -.03em;
+      font-weight: 700;
+    }
+
+    .hero-title {
+      margin: 0;
+      color: #fff;
+      max-width: 1040px;
+      font-size: clamp(56px, 8vw, 116px);
+      line-height: .96;
+      letter-spacing: -.035em;
+      font-weight: 800;
+      text-wrap: balance;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin: 30px 0 0;
+    }
+
+    .action-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      min-height: 58px;
+      padding: 12px 28px 12px 22px;
+      border-radius: 999px;
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      text-decoration: none;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+      border: 0;
+    }
+
+    .button-play-icon {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      border: 1.8px solid currentColor;
+      background: transparent;
+      color: currentColor;
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .button-play-icon::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      border-left: 6px solid currentColor;
+      margin-left: 2px;
+    }
+
+    .action-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .action-button.primary {
+      background: rgba(255, 255, 255, .92);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, .42);
+      box-shadow: 0 12px 34px rgba(0, 0, 0, .14);
+      backdrop-filter: saturate(180%) blur(18px);
+      -webkit-backdrop-filter: saturate(180%) blur(18px);
+    }
+
+    .action-button.primary .button-play-icon {
+      background: transparent;
+      color: var(--text);
+    }
+
+    .content-wrap {
+      width: 100%;
+      max-width: var(--site-max-width);
+      margin: 0 auto;
+      padding: 56px 48px 0;
+    }
+
+    .video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+      background: rgba(0, 0, 0, .68);
+      backdrop-filter: blur(24px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .24s ease;
+    }
+
+    .video-modal.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .video-modal-shell {
+      width: min(100%, 1060px, calc((100dvh - 294px) * 16 / 9));
+      max-height: calc(100dvh - 64px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #1c1c1e;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, .42);
+      transform: translateY(14px) scale(.985);
+      transition: transform .24s ease;
+    }
+
+    .video-modal.open .video-modal-shell {
+      transform: translateY(0) scale(1);
+    }
+
+    .video-modal-card {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      flex: 0 0 auto;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .video-modal-card video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+      background: #111;
+    }
+
+    .video-transcript-header {
+      flex: 0 0 auto;
+      background: #1c1c1e;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .video-transcript-toggle {
+      width: 100%;
+      min-height: 56px;
+      padding: 0 56px;
+      border: 0;
+      background: transparent;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .video-transcript-toggle:hover {
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .video-transcript-toggle:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, .72);
+      outline-offset: -4px;
+    }
+
+    .video-transcript-label {
+      display: block;
+      max-width: 900px;
+      color: #ffffff;
+      font-size: 13px;
+      line-height: 1;
+      letter-spacing: -.006em;
+      font-weight: 800;
+      text-transform: none;
+    }
+
+    .video-transcript-chevron {
+      width: 22px;
+      height: 22px;
+      display: block;
+      flex: 0 0 auto;
+      color: #8e8e93;
+      transition: transform .3s cubic-bezier(.2, 0, .2, 1), color .2s ease;
+    }
+
+    .video-transcript-chevron path {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .video-transcript-toggle[aria-expanded="true"] .video-transcript-chevron {
+      transform: rotate(180deg);
+    }
+
+    .video-transcript-toggle:hover .video-transcript-chevron {
+      color: #ffffff;
+    }
+
+    .video-transcript-panel {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      background: #1c1c1e;
+      transition: max-height .38s cubic-bezier(.2, 0, .2, 1), opacity .22s ease;
+    }
+
+    .video-transcript-panel.is-open {
+      max-height: 260px;
+      opacity: 1;
+    }
+
+    .video-transcript {
+      position: relative;
+      height: 260px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 16px 56px 46px;
+      background: #1c1c1e;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.22) transparent;
+      scroll-behavior: smooth;
+    }
+
+    .video-transcript::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .video-transcript::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .video-transcript::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,.2);
+      border-radius: 999px;
+    }
+
+    .video-transcript-text {
+      max-width: 900px;
+      margin: 0 auto;
+      color: #c7c7cc;
+      font-size: clamp(20px, 2.1vw, 30px);
+      line-height: 1.5;
+      letter-spacing: -.02em;
+      font-weight: 600;
+    }
+
+    .transcript-cue {
+      width: 100%;
+      margin: 0 0 1.15em;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #8e8e93;
+      opacity: .82;
+      font: inherit;
+      line-height: inherit;
+      letter-spacing: inherit;
+      font-weight: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: color .2s ease, opacity .2s ease, background .2s ease;
+    }
+
+    .transcript-cue:hover {
+      color: #d1d1d6;
+      opacity: 1;
+    }
+
+    .transcript-cue:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, .72);
+      outline-offset: 5px;
+    }
+
+    .transcript-cue.is-active {
+      color: #ffffff;
+      opacity: 1;
+    }
+
+    .transcript-cue:last-child {
+      margin-bottom: 0;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .86);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      z-index: 1001;
+      backdrop-filter: blur(16px);
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .modal-close:hover {
+      transform: scale(1.04);
+      background: #fff;
+    }
+
+    .modal-close::before,
+    .modal-close::after {
+      content: "";
+      position: absolute;
+      width: 17px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .modal-close::before { transform: rotate(45deg); }
+    .modal-close::after { transform: rotate(-45deg); }
+
+    body.modal-open,
+    body.gallery-lightbox-open {
+      overflow: hidden;
+    }
+
+    .reveal-on-load,
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-on-load.is-visible,
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: .08s; }
+    .reveal-delay-2 { transition-delay: .18s; }
+    .reveal-delay-3 { transition-delay: .28s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before,
+      .reveal-on-load,
+      .reveal-on-scroll,
+      .accordion-panel,
+      .video-modal,
+      .video-modal-shell,
+      .video-modal-card {
+        transition: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+      }
+    }
+
+    .faq-section {
+      margin-top: 0;
+    }
+
+    .faq-title {
+      margin: 0 0 18px;
+      font-size: clamp(40px, 4.8vw, 58px);
+      line-height: 1.02;
+      letter-spacing: -.04em;
+      font-weight: 800;
+    }
+
+    .intro-line {
+      margin: 0 0 28px;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.32;
+      letter-spacing: -.018em;
+      font-weight: 600;
+    }
+
+    .faq-search-wrap {
+      margin: 0 0 38px;
+      max-width: 760px;
+    }
+
+    .faq-search {
+      min-height: 56px;
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid var(--soft-line);
+      border-radius: 18px;
+      padding: 0 14px 0 18px;
+      background: #f5f5f7;
+      color: var(--muted);
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .faq-search:focus-within {
+      background: #fff;
+      border-color: rgba(29, 29, 31, .34);
+      box-shadow: 0 0 0 4px rgba(0, 0, 0, .07);
+    }
+
+    .faq-search-icon {
+      width: 24px;
+      height: 24px;
+      display: block;
+      color: #86868b;
+    }
+
+    .faq-search-icon path,
+    .faq-search-icon circle {
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.35;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .faq-search-input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 19px;
+      line-height: 1;
+      letter-spacing: -.018em;
+      font-weight: 700;
+      padding: 14px 0;
+      min-width: 0;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .faq-search-input::-webkit-search-cancel-button,
+    .faq-search-input::-webkit-search-decoration,
+    .faq-search-input::-webkit-search-results-button,
+    .faq-search-input::-webkit-search-results-decoration {
+      appearance: none;
+      -webkit-appearance: none;
+      display: none;
+    }
+
+    .faq-search-input::placeholder {
+      color: #86868b;
+      opacity: 1;
+    }
+
+    .faq-search-clear {
+      border: 0;
+      background: transparent;
+      color: var(--danger-red);
+      border-radius: 999px;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      font-size: 0;
+      line-height: 1;
+      font-weight: 800;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, background .2s ease, color .2s ease;
+      position: relative;
+    }
+
+    .faq-search-clear::before,
+    .faq-search-clear::after {
+      content: "";
+      position: absolute;
+      width: 13px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .faq-search-clear::before { transform: rotate(45deg); }
+    .faq-search-clear::after { transform: rotate(-45deg); }
+
+    .faq-search-clear.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .faq-search-clear:hover {
+      color: #d70015;
+      background: rgba(255, 59, 48, .1);
+    }
+
+    .faq-search-meta {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.25;
+      letter-spacing: -.006em;
+      font-weight: 700;
+      min-height: 17px;
+    }
+
+    .search-highlight {
+      background: rgba(0, 0, 0, .10);
+      color: inherit;
+      border-radius: 5px;
+      padding: 0 .1em;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      transition: background .28s ease, box-shadow .28s ease;
+    }
+
+    .search-highlight.first-match {
+      background: rgba(0, 0, 0, .16);
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, .12);
+    }
+
+    .faq-category {
+      margin: 54px 0 18px;
+      color: var(--text);
+      font-size: clamp(24px, 2.4vw, 32px);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+      text-transform: none;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .faq-category-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 0;
+      background: transparent;
+      color: var(--text);
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+    }
+
+    .faq-category-icon svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .faq-category-icon path,
+    .faq-category-icon circle,
+    .faq-category-icon rect,
+    .faq-category-icon line,
+    .faq-category-icon polyline {
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .accordion {
+      background: #fff;
+      border-top: 1px solid var(--soft-line);
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--soft-line);
+      background: #fff;
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      min-height: 56px;
+      border: 0;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 1fr 28px;
+      align-items: center;
+      gap: 24px;
+      padding: 0;
+      text-align: left;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .accordion-title {
+      font-size: 21px;
+      line-height: 1.18;
+      letter-spacing: -.04em;
+      font-weight: 800;
+      padding: 17px 0;
+    }
+
+    .accordion-icon {
+      width: 28px;
+      height: 28px;
+      position: relative;
+      justify-self: end;
+    }
+
+    .accordion-icon::before,
+    .accordion-icon::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 10px;
+      height: 2px;
+      background: #8b8b91;
+      border-radius: 999px;
+      transition: transform .32s cubic-bezier(.2, 0, .2, 1), background .2s ease;
+    }
+
+    .accordion-icon::before {
+      left: 6px;
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .accordion-icon::after {
+      right: 6px;
+      transform: translateY(-50%) rotate(-45deg);
+    }
+
+    .accordion-item.open .accordion-icon::before {
+      transform: translateY(-50%) rotate(-45deg);
+    }
+
+    .accordion-item.open .accordion-icon::after {
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .accordion-panel {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-6px);
+      transition: max-height .42s cubic-bezier(.2, 0, .2, 1), opacity .26s ease, transform .32s cubic-bezier(.2, 0, .2, 1);
+      background: #fff;
+    }
+
+    .accordion-item.open .accordion-panel {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .accordion-panel-inner {
+      padding: 0 0 31px;
+      background: #fff;
+    }
+
+    .accordion-panel p {
+      margin: 0;
+      max-width: 760px;
+      color: #3a3a3c;
+      font-size: 13px;
+      line-height: 1.45;
+      letter-spacing: -.006em;
+    }
+
+    .gallery-section {
+      margin-top: 88px;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      background: #f5f5f7;
+      padding: 72px 0 84px;
+      overflow: hidden;
+    }
+
+    .gallery-inner {
+      width: 100%;
+      max-width: var(--site-max-width);
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .gallery-intro {
+      max-width: 820px;
+      margin: 0 0 42px;
+    }
+
+    .gallery-intro h2 {
+      margin: 0 0 12px;
+      color: var(--text);
+      font-size: clamp(34px, 4.2vw, 56px);
+      line-height: 1.03;
+      letter-spacing: -.05em;
+      font-weight: 800;
+    }
+
+    .gallery-intro p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.32;
+      letter-spacing: -.018em;
+      font-weight: 600;
+      max-width: 790px;
+    }
+
+
+    .gallery-carousel {
+      width: 100%;
+    }
+
+    .gallery-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 24px;
+      background: #111;
+      box-shadow: none;
+    }
+
+    .gallery-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .34s ease, visibility .34s ease;
+    }
+
+    .gallery-slide.is-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .gallery-media {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #111;
+    }
+
+    .gallery-open-area {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border: 0;
+      background: transparent;
+      cursor: zoom-in;
+    }
+
+    .gallery-expand {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      z-index: 4;
+      width: var(--gallery-control-height);
+      min-height: var(--gallery-control-height);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border-radius: 999px;
+      background: var(--gallery-control-bg);
+      color: var(--gallery-control-text);
+      font-size: 13px;
+      line-height: 1;
+      letter-spacing: -.01em;
+      font-weight: 800;
+      pointer-events: none;
+      backdrop-filter: blur(var(--gallery-control-blur));
+      -webkit-backdrop-filter: blur(var(--gallery-control-blur));
+    }
+
+    .gallery-expand-icon {
+      width: 15px;
+      height: 15px;
+      position: relative;
+      display: block;
+    }
+
+    .gallery-expand-icon::before,
+    .gallery-expand-icon::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-color: currentColor;
+      border-style: solid;
+    }
+
+    .gallery-expand-icon::before {
+      top: 0;
+      right: 0;
+      border-width: 2px 2px 0 0;
+    }
+
+    .gallery-expand-icon::after {
+      left: 0;
+      bottom: 0;
+      border-width: 0 0 2px 2px;
+    }
+
+    .gallery-counter {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      z-index: 4;
+      min-height: var(--gallery-control-height);
+      display: inline-flex;
+      align-items: center;
+      padding: 0 15px;
+      border-radius: 999px;
+      background: var(--gallery-control-bg);
+      color: var(--gallery-control-text);
+      font-size: 13px;
+      line-height: 1;
+      letter-spacing: -.01em;
+      font-weight: 800;
+      pointer-events: none;
+      backdrop-filter: blur(var(--gallery-control-blur));
+      -webkit-backdrop-filter: blur(var(--gallery-control-blur));
+    }
+
+    .gallery-thumbnails {
+      width: min(100%, 560px);
+      margin: 18px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gallery-thumbnail {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      padding: 0;
+      overflow: hidden;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: #e5e5ea;
+      opacity: .66;
+      cursor: pointer;
+      transition: opacity .2s ease, border-color .2s ease, transform .2s ease;
+    }
+
+    .gallery-thumbnail:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .gallery-thumbnail:focus-visible {
+      outline: 3px solid rgba(29, 29, 31, .28);
+      outline-offset: 3px;
+    }
+
+    .gallery-thumbnail.is-active {
+      opacity: 1;
+      border-color: var(--text);
+    }
+
+    .gallery-thumbnail-media {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .gallery-thumbnail-video-badge {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+
+    .gallery-thumbnail-play-icon {
+      width: var(--gallery-control-height);
+      height: var(--gallery-control-height);
+      border-radius: 50%;
+      background: var(--gallery-control-bg);
+      color: var(--gallery-control-text);
+      backdrop-filter: blur(var(--gallery-control-blur));
+      -webkit-backdrop-filter: blur(var(--gallery-control-blur));
+      position: relative;
+    }
+
+    .gallery-thumbnail-play-icon::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-38%, -50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 12px solid currentColor;
+    }
+
+    .gallery-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1400;
+      display: grid;
+      place-items: center;
+      padding: 70px 82px;
+      background: rgba(0, 0, 0, .88);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .24s ease, visibility .24s ease;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .gallery-lightbox.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .gallery-lightbox-media {
+      width: min(100%, 1400px);
+      height: min(82vh, 900px);
+      display: grid;
+      place-items: center;
+    }
+
+    .gallery-lightbox-media video,
+    .gallery-lightbox-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .gallery-lightbox-close,
+    .gallery-lightbox-nav {
+      position: absolute;
+      z-index: 2;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .9);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .gallery-lightbox-close {
+      top: 22px;
+      right: 22px;
+    }
+
+    .gallery-lightbox-close::before,
+    .gallery-lightbox-close::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 2px;
+      border-radius: 999px;
+      background: currentColor;
+    }
+
+    .gallery-lightbox-close::before { transform: rotate(45deg); }
+    .gallery-lightbox-close::after { transform: rotate(-45deg); }
+
+    .gallery-lightbox-nav {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .gallery-lightbox-prev { left: 22px; }
+    .gallery-lightbox-next { right: 22px; }
+
+    .gallery-lightbox-nav::before {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+    }
+
+    .gallery-lightbox-prev::before {
+      transform: rotate(-135deg);
+      margin-left: 4px;
+    }
+
+    .gallery-lightbox-next::before {
+      transform: rotate(45deg);
+      margin-right: 4px;
+    }
+
+    .gallery-lightbox-counter {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, .9);
+      font-size: 13px;
+      line-height: 1;
+      letter-spacing: .02em;
+      font-weight: 800;
+    }
+
+
+    /* Practice Reflection Log */
+    .practice-section {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      background: #ffffff;
+      padding: 104px 0 112px;
+      overflow: hidden;
+    }
+
+    .practice-inner {
+      width: 100%;
+      max-width: var(--site-max-width);
+      margin: 0 auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(360px, 1.1fr);
+      align-items: center;
+      gap: clamp(56px, 8vw, 112px);
+    }
+
+    .practice-copy {
+      max-width: 500px;
+    }
+
+    .practice-title {
+      margin: 0 0 18px;
+      color: var(--text);
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: .98;
+      letter-spacing: -.055em;
+      font-weight: 800;
+      text-wrap: balance;
+    }
+
+    .practice-description {
+      margin: 0;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.32;
+      letter-spacing: -.018em;
+      font-weight: 600;
+      max-width: 470px;
+    }
+
+    .practice-note {
+      margin: 24px 0 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: #6e6e73;
+      font-size: 13px;
+      line-height: 1.35;
+      letter-spacing: -.006em;
+      font-weight: 700;
+    }
+
+    .practice-note-icon {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      color: #86868b;
+    }
+
+    .practice-note-icon path,
+    .practice-note-icon circle {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .practice-actions {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .practice-start-button,
+    .practice-restart-button {
+      min-height: 48px;
+      border-radius: 999px;
+      padding: 0 20px;
+      font-family: inherit;
+      font-size: 14px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .practice-start-button {
+      border: 0;
+      background: #1d1d1f;
+      color: #fff;
+    }
+
+    .practice-restart-button {
+      border: 1px solid #d2d2d7;
+      background: #fff;
+      color: #1d1d1f;
+    }
+
+    .practice-restart-button[hidden] {
+      display: none;
+    }
+
+    .practice-start-button:hover,
+    .practice-restart-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .practice-demo-wrap {
+      display: flex;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .practice-demo {
+      width: min(100%, 390px, calc((100dvh - 120px) * 644 / 1324));
+      aspect-ratio: 644 / 1324;
+      height: auto;
+      border: 8px solid #000;
+      border-radius: 34px;
+      overflow: hidden;
+      background: #f5f5f7;
+      position: relative;
+      box-shadow: none;
+    }
+
+    .practice-demo-view {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+
+    .practice-demo-view.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* Lock screen state */
+    .practice-lock-view {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      inset: 0;
+      color: #fff;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    .practice-lock-wallpaper {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(180deg, rgba(7, 16, 34, .12), rgba(7, 16, 34, .18)),
+        url("https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    .practice-lock-wallpaper::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,0) 22%, rgba(0,0,0,.16) 100%);
+      pointer-events: none;
+    }
+
+    .practice-lock-top {
+      position: relative;
+      z-index: 2;
+      padding: 80px 22px 0;
+      text-align: center;
+    }
+
+    .practice-lock-date {
+      margin: 0 0 8px;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 650;
+      letter-spacing: -.02em;
+      text-shadow: 0 1px 8px rgba(0,0,0,.12);
+    }
+
+    .practice-lock-time {
+      margin: 0;
+      font-size: clamp(54px, 11vw, 78px);
+      line-height: .9;
+      font-weight: 600;
+      letter-spacing: -.035em;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 1px 10px rgba(0,0,0,.10);
+    }
+
+    .practice-lock-notifications {
+      position: relative;
+      z-index: 2;
+      margin-top: 96px;
+      padding: 0 14px;
+    }
+
+    .practice-notification {
+      width: 100%;
+      border: 0;
+      border-radius: 20px;
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      gap: 11px;
+      align-items: start;
+      background: rgba(247,247,249,.82);
+      color: #1d1d1f;
+      text-align: left;
+      cursor: pointer;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.56),
+        0 8px 26px rgba(0,0,0,.10);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      opacity: 0;
+      transform: translateY(-14px) scale(.98);
+      pointer-events: none;
+      transition:
+        opacity .34s cubic-bezier(.2,0,.2,1),
+        transform .42s cubic-bezier(.2,0,.2,1);
+    }
+
+    .practice-demo.notification-ready .practice-notification {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .practice-notification-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #d9d9de;
+      color: #55555a;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .practice-notification-copy {
+      min-width: 0;
+    }
+
+    .practice-notification-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 1px 0 4px;
+      color: #1d1d1f;
+      font-size: 13px;
+      line-height: 1.1;
+      font-weight: 750;
+    }
+
+    .practice-notification-text {
+      margin: 0;
+      color: #3a3a3c;
+      font-size: 12px;
+      line-height: 1.3;
+      font-weight: 500;
+    }
+
+    .practice-notification-time {
+      margin-top: 2px;
+      color: #8e8e93;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .practice-lock-spacer {
+      position: relative;
+      z-index: 2;
+      margin-top: auto;
+      min-height: 80px;
+    }
+
+    /* Message state */
+    .practice-message-view {
+      background: #f5f5f7;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .practice-message-header {
+      min-height: 76px;
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid #e5e5ea;
+      background: rgba(249,249,249,.96);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .practice-message-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background: #d9d9de;
+      color: #55555a;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .practice-message-sender {
+      min-width: 0;
+    }
+
+    .practice-message-sender strong {
+      display: block;
+      color: #1d1d1f;
+      font-size: 14px;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+    }
+
+    .practice-message-sender span {
+      display: block;
+      margin-top: 3px;
+      color: #8e8e93;
+      font-size: 11px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .practice-message-body {
+      flex: 1 1 auto;
+      padding: 20px 13px 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .practice-message-time {
+      margin: 0 auto 13px;
+      color: #8e8e93;
+      font-size: 10px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .practice-message-bubble {
+      width: min(86%, 330px);
+      padding: 10px 12px;
+      border-radius: 18px 18px 18px 5px;
+      background: #e9e9eb;
+      color: #111111;
+      font-size: clamp(12px, 2.5vw, 15px);
+      line-height: 1.35;
+      letter-spacing: -.012em;
+      font-weight: 500;
+    }
+
+    .practice-message-bubble p {
+      margin: 0;
+    }
+
+    .practice-message-link {
+      display: inline;
+      color: #007aff;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+      cursor: pointer;
+    }
+
+    .practice-message-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Survey state */
+    .practice-survey-view {
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .practice-survey-header {
+      position: relative;
+      z-index: 2;
+      min-height: 65px;
+      flex: 0 0 auto;
+      padding: 18px 16px 8px;
+      display: grid;
+      grid-template-columns: 32px 1fr 32px;
+      align-items: end;
+      border-bottom: 1px solid #e5e5ea;
+      background: rgba(249,249,249,.96);
+    }
+
+    .practice-survey-back {
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #007aff;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .practice-survey-back svg {
+      width: 17px;
+      height: 17px;
+      display: block;
+    }
+
+    .practice-survey-domain {
+      min-width: 0;
+      color: #1d1d1f;
+      font-size: 12px;
+      line-height: 1.1;
+      font-weight: 700;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .practice-survey-frame-wrap {
+      flex: 1 1 auto;
+      min-height: 0;
+      padding: 0;
+      background: #fff;
+    }
+
+    .practice-survey-frame {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      display: block;
+      border: 0;
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .practice-demo.is-idle .practice-message-time,
+    .practice-demo.is-idle .practice-message-bubble {
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+    }
+
+    .practice-message-time,
+    .practice-message-bubble {
+      transition:
+        opacity .32s cubic-bezier(.2, 0, .2, 1),
+        transform .38s cubic-bezier(.2, 0, .2, 1);
+    }
+
+    .practice-demo.is-started .practice-message-time,
+    .practice-demo.is-started .practice-message-bubble {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 860px) {
+      .practice-section {
+        padding: 74px 0 82px;
+      }
+
+      .practice-inner {
+        padding: 0 24px;
+        grid-template-columns: 1fr;
+        gap: 46px;
+      }
+
+      .practice-copy {
+        max-width: 650px;
+      }
+
+      .practice-description {
+        font-size: 18px;
+      }
+
+      .practice-demo {
+        width: min(88vw, 370px, calc((100dvh - 96px) * 644 / 1324));
+        height: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .practice-demo-view,
+      .practice-message-time,
+      .practice-message-bubble,
+      .practice-start-button,
+      .practice-restart-button {
+        transition: none !important;
+      }
+    }
+
+
+    .team-section {
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      background: #f5f5f7;
+      padding: 88px 0 96px;
+    }
+
+    .team-inner {
+      width: 100%;
+      max-width: var(--site-max-width);
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .team-intro {
+      max-width: 760px;
+      margin-bottom: 42px;
+    }
+
+    .team-title {
+      margin: 0 0 14px;
+      color: var(--text);
+      font-size: clamp(36px, 4.5vw, 56px);
+      line-height: 1.02;
+      letter-spacing: -.05em;
+      font-weight: 800;
+    }
+
+    .team-description {
+      margin: 0;
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.32;
+      letter-spacing: -.018em;
+      font-weight: 600;
+      max-width: 720px;
+    }
+
+    .team-names {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 44px;
+      row-gap: 26px;
+      align-items: start;
+    }
+
+    .team-name {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(22px, 2.2vw, 30px);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+      font-weight: 760;
+      text-wrap: balance;
+    }
+
+    .team-name::after {
+      content: "";
+      display: block;
+      width: 28px;
+      height: 2px;
+      margin-top: 12px;
+      background: #c7c7cc;
+      border-radius: 999px;
+    }
+
+    @media (max-width: 860px) {
+      .team-section {
+        padding: 68px 0 74px;
+      }
+
+      .team-inner {
+        padding: 0 24px;
+      }
+
+      .team-description {
+        font-size: 18px;
+      }
+
+      .team-names {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 28px;
+        row-gap: 24px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .team-names {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .footer {
+      background: var(--footer);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+      padding: 28px 48px;
+    }
+
+    .footer-inner {
+      width: 100%;
+      max-width: var(--site-max-width);
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      text-decoration-thickness: 1px;
+    }
+
+    .footer-links a:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    .divider-mark {
+      width: 1px;
+      height: 12px;
+      background: #c7c7cc;
+      display: inline-block;
+    }
+
+    @media (max-width: 760px) {
+      .hero-inner {
+        padding: 32px 24px 42px;
+      }
+
+      .hero-lockup {
+        max-width: 100%;
+      }
+
+      .hero-eyebrow {
+        margin-bottom: 12px;
+        font-size: clamp(22px, 7vw, 32px);
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 12vw, 62px);
+        line-height: 1.02;
+        letter-spacing: -.025em;
+      }
+
+      .content-wrap {
+        padding: 42px 24px 0;
+      }
+
+      .video-modal {
+        padding: 18px;
+      }
+
+      .video-modal-shell {
+        width: 100%;
+        max-height: calc(100dvh - 36px);
+        border-radius: 14px;
+      }
+
+      .video-transcript-toggle {
+        min-height: 52px;
+        padding: 0 24px;
+      }
+
+      .video-transcript-panel.is-open {
+        max-height: 32dvh;
+      }
+
+      .video-transcript {
+        height: 32dvh;
+        min-height: 165px;
+        padding: 13px 24px 34px;
+      }
+
+      .video-transcript-text {
+        font-size: clamp(19px, 5.5vw, 25px);
+        line-height: 1.38;
+      }
+
+      .modal-close {
+        top: 12px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+      }
+
+      .faq-title { margin-bottom: 14px; }
+
+      .intro-line {
+        font-size: 19px;
+        margin-bottom: 24px;
+      }
+
+      .faq-search-wrap {
+        margin-bottom: 34px;
+      }
+
+      .faq-search {
+        min-height: 52px;
+        grid-template-columns: 24px 1fr auto;
+        border-radius: 16px;
+        padding-left: 15px;
+      }
+
+      .faq-search-input {
+        font-size: 13px;
+      }
+
+      .faq-search-clear {
+        padding: 7px 8px;
+      }
+
+      .faq-category {
+        margin-top: 42px;
+        margin-bottom: 14px;
+        gap: 12px;
+      }
+
+      .faq-category-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 0;
+      }
+
+      .faq-category-icon svg {
+        width: 32px;
+        height: 32px;
+      }
+
+      .accordion-title {
+        font-size: 18px;
+        padding: 16px 0;
+      }
+
+      .accordion-panel p { font-size: 16px; }
+
+      .gallery-section {
+        margin-top: 58px;
+        padding: 54px 0 60px;
+      }
+
+      .gallery-inner {
+        padding: 0 24px;
+      }
+
+      .gallery-intro {
+        margin-bottom: 30px;
+      }
+
+      .gallery-intro h2 {
+        font-size: clamp(30px, 10vw, 42px);
+      }
+
+      .gallery-intro p {
+        font-size: 18px;
+      }
+
+      .gallery-stage {
+        border-radius: 16px;
+      }
+
+      .gallery-thumbnails {
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .gallery-thumbnail {
+        border-radius: 8px;
+      }
+
+      .gallery-expand {
+        top: 10px;
+        right: 10px;
+        width: 34px;
+        min-height: 34px;
+        padding: 0;
+      }
+
+      .gallery-counter {
+        left: 10px;
+        bottom: 10px;
+      }
+
+      .gallery-lightbox {
+        padding: 66px 14px 70px;
+      }
+
+      .gallery-lightbox-media {
+        width: 100%;
+        height: 72vh;
+      }
+
+      .gallery-lightbox-close {
+        top: 12px;
+        right: 12px;
+        width: 44px;
+        height: 44px;
+      }
+
+      .gallery-lightbox-nav {
+        top: auto;
+        bottom: 12px;
+        width: 44px;
+        height: 44px;
+        transform: none;
+      }
+
+      .gallery-lightbox-prev { left: 14px; }
+      .gallery-lightbox-next { right: 14px; }
+
+      .gallery-lightbox-counter {
+        bottom: 28px;
+      }
+
+      .footer { padding: 26px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-lockup">
+          <p class="hero-eyebrow reveal-on-load reveal-delay-1">2026</p>
+          <h1 class="hero-title reveal-on-load reveal-delay-2">Study of Photography Experiences</h1>
+          <div class="action-row reveal-on-load reveal-delay-3" aria-label="Study resources">
+            <a class="action-button primary" href="#" id="watchVideoButton"><span class="button-play-icon" aria-hidden="true"></span><span>Watch Onboarding Video</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-wrap">
+      <section class="faq-section" aria-labelledby="faqTitle">
+        <h2 class="faq-title reveal-on-scroll" id="faqTitle">Questions?</h2>
+        <p class="intro-line reveal-on-scroll reveal-delay-1">Find answers to common questions about participating in the photography experiences study.</p>
+        <div class="faq-search-wrap reveal-on-scroll reveal-delay-2">
+          <label class="faq-search" for="faqSearchInput">
+            <svg class="faq-search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5"></circle>
+              <path d="M16.2 16.2 21 21"></path>
+            </svg>
+            <input class="faq-search-input" id="faqSearchInput" type="text" placeholder="Search FAQs" autocomplete="off" />
+            <button class="faq-search-clear" id="faqSearchClear" type="button" aria-label="Clear FAQ search">Clear</button>
+          </label>
+          <div class="faq-search-meta" id="faqSearchMeta" aria-live="polite"></div>
+        </div>
+        <div id="faqRoot"></div>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="virtualGalleryTitle">
+        <div class="gallery-inner">
+          <div class="gallery-intro">
+            <h2 class="reveal-on-scroll" id="virtualGalleryTitle">Your photos will become a virtual gallery.</h2>
+            <p class="reveal-on-scroll reveal-delay-1">After the study, you’ll receive a personalized virtual gallery featuring the photos you submitted. The gallery will be yours to explore online and share with friends, family, or anyone you choose.</p>
+          </div>
+
+          <div class="gallery-carousel reveal-on-scroll reveal-delay-2" id="galleryCarousel">
+            <div class="gallery-stage">
+              <div class="gallery-slide is-active" data-gallery-index="0" aria-hidden="false">
+                <video
+                  class="gallery-media gallery-preview-video"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-label="Video preview of a personalized virtual photography gallery">
+                  <source src="https://www.dropbox.com/scl/fi/7fkyecnt3bsbj2o9ibgwz/Revized-Virtual-Gallery-Demo-Vid-2.mp4?rlkey=n61vl6uc9umfrqtgasq47x208&amp;raw=1" type="video/mp4" />
+                  Your browser does not support embedded MP4 video.
+                </video>
+              </div>
+
+              <div class="gallery-slide" data-gallery-index="1" aria-hidden="true">
+                <img
+                  class="gallery-media"
+                  src="https://www.dropbox.com/scl/fi/j0k3b1165qjgbx5lmxipz/Screenshot-2026-08-05-at-11.36.03-AM.png?rlkey=45t05j0lnudz0y6qwfd8nvb1c&amp;st=0vvhhfow&amp;raw=1"
+                  alt="Screenshot showing an example view inside the virtual photography gallery"
+                  loading="lazy" />
+              </div>
+
+              <div class="gallery-slide" data-gallery-index="2" aria-hidden="true">
+                <img
+                  class="gallery-media"
+                  src="https://www.dropbox.com/scl/fi/qz2lr2u24e6qgp6yhmy0e/Screenshot-2026-08-05-at-11.36.47-AM.png?rlkey=5rxgsxec5hdvmospeere5ljpy&amp;st=el1jm6ph&amp;raw=1"
+                  alt="A second screenshot showing an example view inside the virtual photography gallery"
+                  loading="lazy" />
+              </div>
+
+              <button class="gallery-open-area" id="galleryOpenButton" type="button" aria-label="Open the current gallery preview in a lightbox"></button>
+              <span class="gallery-expand" aria-hidden="true"><span class="gallery-expand-icon"></span></span>
+              <div class="gallery-counter" id="galleryCounter" aria-live="polite">1 of 3</div>
+            </div>
+
+            <div class="gallery-thumbnails" aria-label="Choose a gallery preview">
+              <button class="gallery-thumbnail is-active" type="button" data-gallery-thumbnail="0" aria-label="Show gallery video" aria-current="true">
+                <video class="gallery-thumbnail-media" muted playsinline preload="auto" data-static-video-thumbnail aria-hidden="true">
+                  <source src="https://www.dropbox.com/scl/fi/7fkyecnt3bsbj2o9ibgwz/Revized-Virtual-Gallery-Demo-Vid-2.mp4?rlkey=n61vl6uc9umfrqtgasq47x208&amp;raw=1" type="video/mp4" />
+                </video>
+                <span class="gallery-thumbnail-video-badge" aria-hidden="true">
+                  <span class="gallery-thumbnail-play-icon"></span>
+                </span>
+              </button>
+              <button class="gallery-thumbnail" type="button" data-gallery-thumbnail="1" aria-label="Show first gallery screenshot">
+                <img class="gallery-thumbnail-media" src="https://www.dropbox.com/scl/fi/j0k3b1165qjgbx5lmxipz/Screenshot-2026-08-05-at-11.36.03-AM.png?rlkey=45t05j0lnudz0y6qwfd8nvb1c&amp;st=0vvhhfow&amp;raw=1" alt="" loading="lazy" />
+              </button>
+              <button class="gallery-thumbnail" type="button" data-gallery-thumbnail="2" aria-label="Show second gallery screenshot">
+                <img class="gallery-thumbnail-media" src="https://www.dropbox.com/scl/fi/qz2lr2u24e6qgp6yhmy0e/Screenshot-2026-08-05-at-11.36.47-AM.png?rlkey=5rxgsxec5hdvmospeere5ljpy&amp;st=el1jm6ph&amp;raw=1" alt="" loading="lazy" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="practice-section" aria-labelledby="practiceReflectionTitle">
+        <div class="practice-inner">
+          <div class="practice-copy">
+            <h2 class="practice-title reveal-on-scroll" id="practiceReflectionTitle">Practice Reflection Log</h2>
+            <p class="practice-description reveal-on-scroll reveal-delay-1">During the study, you’ll receive a text at your chosen evening time inviting you to complete your Reflection Log. Try the practice version here: start the simulation, open the link in the message, and complete the survey just as you would during the study.</p>
+            <p class="practice-note reveal-on-scroll reveal-delay-2">
+              <svg class="practice-note-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="8.5"></circle>
+                <path d="M12 10.6v5.1"></path>
+                <path d="M12 7.7h.01"></path>
+              </svg>
+              Practice responses are not saved.
+            </p>
+            <div class="practice-actions reveal-on-scroll reveal-delay-3">
+              <button class="practice-start-button" id="startPracticeReflection" type="button">Start Practice Reflection Log</button>
+              <button class="practice-restart-button" id="restartPracticeReflection" type="button" hidden>Start Over</button>
+            </div>
+          </div>
+
+          <div class="practice-demo-wrap reveal-on-scroll reveal-delay-2">
+            <div class="practice-demo is-idle" id="practiceDemo">
+              <div class="practice-demo-view practice-lock-view is-active" id="practiceLockView" aria-hidden="false">
+                <div class="practice-lock-wallpaper" aria-hidden="true"></div>
+                <div class="practice-lock-top">
+                  <p class="practice-lock-date">Tuesday, August 18</p>
+                  <p class="practice-lock-time">7:00</p>
+                </div>
+
+                <div class="practice-lock-notifications">
+                  <button class="practice-notification" id="practiceNotification" type="button" aria-label="Open Survey Signal text message">
+                    <span class="practice-notification-icon" aria-hidden="true">SS</span>
+                    <span class="practice-notification-copy">
+                      <span class="practice-notification-title">Survey Signal</span>
+                      <span class="practice-notification-text">It’s time for your evening Reflection Log.</span>
+                    </span>
+                    <span class="practice-notification-time">now</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="practice-demo-view practice-message-view" id="practiceMessagesView" aria-hidden="true">
+                <div class="practice-message-header">
+                  <div class="practice-message-avatar" aria-hidden="true">SS</div>
+                  <div class="practice-message-sender">
+                    <strong>Survey Signal</strong>
+                    <span>Text Message</span>
+                  </div>
+                </div>
+
+                <div class="practice-message-body">
+                  <div class="practice-message-time">Today · 7:00 PM</div>
+                  <div class="practice-message-bubble">
+                    <p>
+                      Hi! It’s time for your evening Reflection Log. Take a moment to review your photos, then use the link below when you’re ready.<br><br>
+                      <a class="practice-message-link" id="openPracticeSurvey" href="https://cgu.co1.qualtrics.com/jfe/form/SV_7R4l6tDOuUGOLum?Q_DONT_SAVE=1">cgu.co1.qualtrics.com/jfe/form/SV_7R4l6tDOuUGOLum</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="practice-demo-view practice-survey-view" id="practiceSurveyView" aria-hidden="true">
+                <div class="practice-survey-header">
+                  <button class="practice-survey-back" id="closePracticeSurvey" type="button" aria-label="Return to text message">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M14.7 5.2 7.9 12l6.8 6.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                  <div class="practice-survey-domain">cgu.co1.qualtrics.com</div>
+                  <span aria-hidden="true"></span>
+                </div>
+
+                <div class="practice-survey-frame-wrap">
+                  <iframe
+                    class="practice-survey-frame"
+                    id="practiceSurveyFrame"
+                    title="Practice Reflection Log survey"
+                    src="https://cgu.co1.qualtrics.com/jfe/form/SV_7R4l6tDOuUGOLum?Q_DONT_SAVE=1"
+                    data-src="https://cgu.co1.qualtrics.com/jfe/form/SV_7R4l6tDOuUGOLum?Q_DONT_SAVE=1"
+                    allow="camera; microphone; clipboard-read; clipboard-write">
+                  </iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  
+      <section class="team-section" aria-labelledby="studyTeamTitle">
+        <div class="team-inner">
+          <div class="team-intro">
+            <h2 class="team-title reveal-on-scroll" id="studyTeamTitle">Meet the study team.</h2>
+            <p class="team-description reveal-on-scroll reveal-delay-1">This study is being conducted by graduate students and faculty at the Quality of Life Research Center at Claremont Graduate University.</p>
+          </div>
+
+          <div class="team-names reveal-on-scroll reveal-delay-2">
+            <p class="team-name">Jeanne Nakamura</p>
+            <p class="team-name">Elena Lee</p>
+            <p class="team-name">Yura Kim</p>
+            <p class="team-name">Katherine Vrooman</p>
+            <p class="team-name">Eli Waxler</p>
+            <p class="team-name">Harry Sun</p>
+            <p class="team-name">Atsushi Kukita</p>
+            <p class="team-name">Sumana Sri</p>
+            <p class="team-name">John Parrott</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  <div class="video-modal" id="videoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Onboarding video">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Close video"></button>
+    <div class="video-modal-shell">
+      <div class="video-modal-card">
+        <video
+          id="studyVideo"
+          controls
+          playsinline
+          preload="metadata"
+          aria-label="2026 Study of Photography Experiences onboarding video">
+          <source src="https://www.dropbox.com/scl/fi/hi61f0ndrv3fn3cn0kj0p/2026-Onboarding.mp4?rlkey=sv9xfjuifut6nqgo6a87oqliq&amp;st=9injdjeu&amp;raw=1" type="video/mp4" />
+          Your browser does not support embedded video playback.
+        </video>
+      </div>
+      <div class="video-transcript-header">
+        <button
+          class="video-transcript-toggle"
+          id="videoTranscriptToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="videoTranscriptPanel">
+          <span class="video-transcript-label" id="videoTranscriptLabel">Transcript</span>
+          <svg class="video-transcript-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="m6 9 6 6 6-6"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="video-transcript-panel" id="videoTranscriptPanel" aria-hidden="true">
+        <div class="video-transcript" id="videoTranscript" aria-labelledby="videoTranscriptLabel" tabindex="0">
+          <div class="video-transcript-text" id="videoTranscriptText"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="gallery-lightbox" id="galleryLightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Virtual gallery preview">
+    <button class="gallery-lightbox-close" id="galleryLightboxClose" type="button" aria-label="Close gallery lightbox"></button>
+    <button class="gallery-lightbox-nav gallery-lightbox-prev" id="galleryLightboxPrev" type="button" aria-label="Show previous gallery item"></button>
+    <div class="gallery-lightbox-media" id="galleryLightboxMedia"></div>
+    <button class="gallery-lightbox-nav gallery-lightbox-next" id="galleryLightboxNext" type="button" aria-label="Show next gallery item"></button>
+    <div class="gallery-lightbox-counter" id="galleryLightboxCounter" aria-live="polite">1 of 3</div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>Copyright © 2026 Quality of Life Research Center. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="https://www.cgu.edu/center/quality-of-life-research-center/" target="_blank" rel="noopener noreferrer">Quality of Life Research Center</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const faqGroups = [
+      {
+        category: "Participation & Study Overview",
+        items: [
+          {
+            question: "What are you studying?",
+            answer: "We are studying people’s experiences with photography. The specific details of the study are not disclosed upfront to avoid introducing biases that could influence your responses."
+          },
+          {
+            question: "Who is the research team? Who are they affiliated with?",
+            answer: "The research team consists of graduate students and faculty from Claremont Graduate University in Claremont, California. This study is being conducted at the Quality of Life Research Center at Claremont Graduate University."
+          },
+          {
+            question: "Can I opt out of the study?",
+            answer: "Absolutely. Your participation is voluntary. You can opt out anytime, and this is also mentioned in the consent form."
+          }
+        ]
+      },
+      {
+        category: "Study Participation & Completion",
+        items: [
+          {
+            question: "How long will it take to fill out the surveys?",
+            answer: "Each survey is designed to take only a few minutes to complete. We recommend setting aside a small amount of time to answer the questions thoughtfully."
+          },
+          {
+            question: "How many surveys will I receive each day?",
+            answer: "You will receive two text messages in the morning. One will allow you to view the prompts that were shown to you the night before, and the other will be used to record your experience after taking photos, called a photo session report. In addition, you will receive one reflection log at your chosen, fixed time each evening. To conclude the study, you will be asked to fill out a one-time End-of-the-Study survey that will ask you to tell us more about yourself, including information such as demographics. Finally, one month after the study, you will be asked to complete a follow-up report. You will also receive reminder texts to keep track of things to do throughout the week, so please look out for text messages from us!"
+          },
+          {
+            question: "Does leaving a survey open affect the next response?",
+            answer: "Leaving a survey open does not interfere with upcoming signals or responses. Still, to avoid confusion, it is best to finish the current survey. If you are unable to complete the survey, please close the survey tab on your internet browser."
+          },
+          {
+            question: "If I miss a day, such as a reflection log, where do I resume?",
+            answer: "If you miss a day, don’t worry. The next day, you will be able to see the prompts from the missed day in the morning. We encourage you to continue from where you left off and complete as many days as possible for the study to be effective. If you miss a day, please note that we can add additional days at the end of the study. If that happens, please reach out to your contact person to schedule additional days."
+          },
+          {
+            question: "How long should I take photos before the evening reflection log?",
+            answer: "We recommend leaving some time to take photos before the reflection log. This allows for thoughtful responses."
+          },
+          {
+            question: "When does the survey expire?",
+            answer: "While all surveys will not expire until you receive the next morning’s text message, we ask that you do try and leave yourself enough time each day to complete the photo session and the evening reflection log."
+          }
+        ]
+      },
+      {
+        category: "Data Privacy & Security",
+        items: [
+          {
+            question: "Will my data be anonymous?",
+            answer: "Anonymity implies that we do not know who the data is coming from. In this study, participation requires communication between you and our research team. While we cannot provide complete anonymity, your data will be kept confidential and will not be linked to your name. A randomly generated ID number will be assigned to you, and only the research team will have access to the information linking your name to that ID. All final study data will be de-identified before analysis to ensure that your responses remain confidential."
+          },
+          {
+            question: "Who will see my photos when I send them to you? How will you protect my photos?",
+            answer: "Only the research team will have access to the photos you submit. These images will be stored in a secure, password-protected database and will not be shared with third parties. Any identifying information will be removed before analysis. All of your photos will be used in your virtual gallery, which you will be able to share with others. We will not publish or distribute your photos in any way."
+          },
+          {
+            question: "How will data be protected on the data collection platform’s end?",
+            answer: "The data collection platform being used in the study uses advanced encryption and security measures. The final study data will be stored as a password-protected file."
+          },
+          {
+            question: "Will my location be tracked through this study?",
+            answer: "Technically, yes. Qualtrics, the survey platform, records IP addresses and location data; however, the research team does not track your data. In addition, any such data collected by Qualtrics will be removed during the data cleaning process and will not be included in the study database that will be used by the research team."
+          }
+        ]
+      },
+      {
+        category: "Technical & Logistical Questions",
+        items: [
+          {
+            question: "How will I send you my photos?",
+            answer: "You will upload your photos inside the reflection log each evening. Please follow the detailed instructions in the survey."
+          },
+          {
+            question: "Can I use my camera instead of my phone for taking photos?",
+            answer: "We would like for you to use the camera on your cellphone for this study to make it easy for you to send your photo to us and respond about your experience."
+          },
+          {
+            question: "What if my phone is on vibrate or silent mode?",
+            answer: "Even if your phone is on vibrate or silent, you will still receive texts from us as scheduled. While these signals vary depending on the start and end time you specified in your expression of interest survey, these signals are predictable, so you can check your phone at the expected times if you are worried about missing them."
+          },
+          {
+            question: "Do standard data and text messaging rates apply?",
+            answer: "Yes, standard data and text messaging rates from your mobile provider may apply when you send your photos to us. We recommend that you check with your service provider if you have concerns about potential charges."
+          },
+          {
+            question: "Who do I contact if I have an issue with the study surveys?",
+            answer: "For any issues related to receiving signals, reminders, or understanding questions, please contact the research team member assigned to you at the beginning of the study, also called your contact person."
+          },
+          {
+            question: "I received an error code from Survey Signal at the time of my first text message. What should I do?",
+            answer: "This issue might be caused by using a VPN on your phone. Please make sure you have turned off your VPN when receiving text messages. For any issues, contact the research team member assigned to you at the beginning of the study, also called your contact person."
+          }
+        ]
+      }
+    ];
+
+    const faqRoot = document.getElementById("faqRoot");
+
+    const faqCategoryIcons = {
+      "Participation & Study Overview": `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>`,
+      "Study Participation & Completion": `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="3"></rect><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h3"></path></svg>`,
+      "Data Privacy & Security": `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l7 3v5.4c0 4.2-2.8 7.4-7 8.6-4.2-1.2-7-4.4-7-8.6V6.5l7-3z"></path><path d="M9.5 12.2l1.7 1.7 3.6-4"></path></svg>`,
+      "Technical & Logistical Questions": `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"></rect><path d="M10 5.5h4"></path><circle cx="12" cy="18" r="0.8" fill="currentColor" stroke="none"></circle></svg>`
+    };
+
+    function createFaqItem(item, index, groupIndex) {
+      const article = document.createElement("article");
+      article.className = "accordion-item";
+      if (groupIndex === 0 && index === 0) article.classList.add("open");
+
+      const trigger = document.createElement("button");
+      trigger.className = "accordion-trigger";
+      trigger.type = "button";
+      trigger.setAttribute("aria-expanded", article.classList.contains("open") ? "true" : "false");
+
+      const title = document.createElement("span");
+      title.className = "accordion-title";
+      title.textContent = item.question;
+
+      const icon = document.createElement("span");
+      icon.className = "accordion-icon";
+      icon.setAttribute("aria-hidden", "true");
+
+      const panel = document.createElement("div");
+      panel.className = "accordion-panel";
+
+      const panelInner = document.createElement("div");
+      panelInner.className = "accordion-panel-inner";
+
+      const answer = document.createElement("p");
+      answer.textContent = item.answer;
+
+      trigger.append(title, icon);
+      panelInner.append(answer);
+      panel.append(panelInner);
+      article.append(trigger, panel);
+
+      return article;
+    }
+
+    function renderFaq() {
+      faqGroups.forEach((group, groupIndex) => {
+        const category = document.createElement("h3");
+        category.className = "faq-category reveal-on-scroll";
+        category.innerHTML = `<span class="faq-category-icon">${faqCategoryIcons[group.category] || ""}</span><span>${group.category}</span>`;
+
+        const accordion = document.createElement("div");
+        accordion.className = "accordion reveal-on-scroll reveal-delay-1";
+
+        group.items.forEach((item, index) => {
+          accordion.appendChild(createFaqItem(item, index, groupIndex));
+        });
+
+        faqRoot.append(category, accordion);
+      });
+
+      refreshPanelHeights();
+    }
+
+    function refreshPanelHeights() {
+      document.querySelectorAll(".accordion-item").forEach(item => {
+        const panel = item.querySelector(".accordion-panel");
+        if (!panel) return;
+        if (item.classList.contains("open")) {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        } else {
+          panel.style.maxHeight = "0px";
+        }
+      });
+    }
+
+    renderFaq();
+
+    const faqSearchInput = document.getElementById("faqSearchInput");
+    const faqSearchClear = document.getElementById("faqSearchClear");
+    const faqSearchMeta = document.getElementById("faqSearchMeta");
+
+    function removeFaqSearchHighlights() {
+      faqRoot.querySelectorAll("mark.search-highlight").forEach(mark => {
+        const textNode = document.createTextNode(mark.textContent);
+        mark.replaceWith(textNode);
+        textNode.parentNode.normalize();
+      });
+    }
+
+    function setFaqSearchMeta(message) {
+      faqSearchMeta.textContent = message || "";
+    }
+
+    function updateFaqSearchClearButton() {
+      faqSearchClear.classList.toggle("visible", faqSearchInput.value.trim().length > 0);
+    }
+
+    function highlightFaqTextNode(textNode, query) {
+      const text = textNode.nodeValue;
+      const lowerText = text.toLowerCase();
+      const lowerQuery = query.toLowerCase();
+      const fragment = document.createDocumentFragment();
+      let cursor = 0;
+      let matchIndex = lowerText.indexOf(lowerQuery, cursor);
+      let count = 0;
+
+      while (matchIndex !== -1) {
+        if (matchIndex > cursor) {
+          fragment.appendChild(document.createTextNode(text.slice(cursor, matchIndex)));
+        }
+
+        const mark = document.createElement("mark");
+        mark.className = "search-highlight";
+        mark.textContent = text.slice(matchIndex, matchIndex + query.length);
+        fragment.appendChild(mark);
+        count += 1;
+
+        cursor = matchIndex + query.length;
+        matchIndex = lowerText.indexOf(lowerQuery, cursor);
+      }
+
+      if (cursor < text.length) {
+        fragment.appendChild(document.createTextNode(text.slice(cursor)));
+      }
+
+      textNode.replaceWith(fragment);
+      return count;
+    }
+
+    function openAccordionForHighlight(highlight) {
+      const item = highlight.closest(".accordion-item");
+      if (!item) return;
+
+      item.classList.add("open");
+      const trigger = item.querySelector(".accordion-trigger");
+      if (trigger) trigger.setAttribute("aria-expanded", "true");
+      refreshPanelHeights();
+    }
+
+    function runFaqSearch() {
+      const query = faqSearchInput.value.trim();
+      removeFaqSearchHighlights();
+
+      if (!query) {
+        setFaqSearchMeta("");
+        refreshPanelHeights();
+        updateFaqSearchClearButton();
+        return;
+      }
+
+      const walker = document.createTreeWalker(
+        faqRoot,
+        NodeFilter.SHOW_TEXT,
+        {
+          acceptNode(node) {
+            if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+            if (node.parentElement && node.parentElement.closest("mark")) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        }
+      );
+
+      const textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+      textNodes.forEach(node => highlightFaqTextNode(node, query));
+
+      const highlights = Array.from(faqRoot.querySelectorAll("mark.search-highlight"));
+
+      if (!highlights.length) {
+        setFaqSearchMeta(`No FAQ matches for “${query}”.`);
+        refreshPanelHeights();
+        updateFaqSearchClearButton();
+        return;
+      }
+
+      const firstHighlight = highlights[0];
+      firstHighlight.classList.add("first-match");
+      openAccordionForHighlight(firstHighlight);
+      setFaqSearchMeta(`${highlights.length} FAQ ${highlights.length === 1 ? "match" : "matches"} for “${query}”.`);
+      updateFaqSearchClearButton();
+
+      setTimeout(() => {
+        firstHighlight.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 120);
+    }
+
+    faqSearchInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        runFaqSearch();
+      }
+    });
+
+    faqSearchInput.addEventListener("input", () => {
+      updateFaqSearchClearButton();
+      if (!faqSearchInput.value.trim()) {
+        removeFaqSearchHighlights();
+        setFaqSearchMeta("");
+        refreshPanelHeights();
+      }
+    });
+
+    faqSearchClear.addEventListener("click", () => {
+      faqSearchInput.value = "";
+      removeFaqSearchHighlights();
+      setFaqSearchMeta("");
+      updateFaqSearchClearButton();
+      refreshPanelHeights();
+      faqSearchInput.focus();
+    });
+
+    function setupRevealAnimations() {
+      const loadRevealItems = document.querySelectorAll(".reveal-on-load");
+      requestAnimationFrame(() => {
+        loadRevealItems.forEach(item => item.classList.add("is-visible"));
+      });
+
+      const scrollRevealItems = document.querySelectorAll(".reveal-on-scroll");
+      const revealObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.16,
+          rootMargin: "0px 0px -8% 0px"
+        }
+      );
+
+      scrollRevealItems.forEach(item => revealObserver.observe(item));
+    }
+
+    setupRevealAnimations();
+
+    document.addEventListener("click", event => {
+      const trigger = event.target.closest(".accordion-trigger");
+      if (!trigger) return;
+
+      const item = trigger.closest(".accordion-item");
+      const wasOpen = item.classList.contains("open");
+
+      item.classList.toggle("open", !wasOpen);
+      trigger.setAttribute("aria-expanded", String(!wasOpen));
+      refreshPanelHeights();
+    });
+
+    window.addEventListener("resize", refreshPanelHeights);
+
+    const studyVideo = document.getElementById("studyVideo");
+    const watchVideoButton = document.getElementById("watchVideoButton");
+    const videoModal = document.getElementById("videoModal");
+    const modalClose = document.getElementById("modalClose");
+    const videoTranscriptToggle = document.getElementById("videoTranscriptToggle");
+    const videoTranscriptPanel = document.getElementById("videoTranscriptPanel");
+    const videoTranscript = document.getElementById("videoTranscript");
+    const videoTranscriptText = document.getElementById("videoTranscriptText");
+
+    const onboardingTranscriptCues = [
+      { start: 0, text: "Hi and welcome to the study of photography experiences." },
+      { start: 4, text: "We at the Quality of Life Research Center of Claremont Graduate University." },
+      { start: 8, text: "Thank you for helping us learn about the creative experience of photography." },
+      { start: 13, text: "In this video, we will give you an overview of why we are interested in doing this study, what we expect from" },
+      { start: 20, text: "you, as well as what you can expect from us, and finally how you will participate in this study. As we proceed, pause or rewind this video at any time." },
+      { start: 32, text: "If anything is unclear, refer to the FAQ on our web page or feel free to call or email your contact person. All right," },
+      { start: 40, text: "let’s get started. Our aim for this research is to understand the photo taking experience." },
+      { start: 46, text: "As digital or smartphone photography has become more accessible, photography has become a regular part of daily life." },
+      { start: 55, text: "By joining this study, you are helping us understand the different ways people interact with and utilize their mobile cameras to be connected to their" },
+      { start: 62, text: "surroundings throughout the day. Your contribution allows us at the Quality of Life Research Center to better understand the role that photography" },
+      { start: 70, text: "plays in modern daily life and personal experience. Here is what we expect from you." },
+      { start: 77, text: "Because we hope to learn about your photo taking experience, you will need to use the same phone for all your photos and to complete your daily" },
+      { start: 84, text: "surveys. We will also send reminders via text throughout the study. So, be sure to turn the volume up on your device." },
+      { start: 91, text: "When taking photos, we encourage you to explore. Take photos freely and remember that the prompts are merely to guide your creative vision. You may choose to plan ahead or be spontaneous." },
+      { start: 104, text: "You may wish to arrange objects or take photos of subjects as they appear." },
+      { start: 109, text: "Now, what can you expect from us during the study? Your contact person will check in with you briefly just to make sure the technology is working and to answer any questions that may arise." },
+      { start: 121, text: "However, please feel free to reach out at any time. You will receive daily reminders and instructions regarding" },
+      { start: 127, text: "photo prompts and surveys. Your data is important to us and we will protect your confidentiality to the best of our ability." },
+      { start: 136, text: "Upon completion of your end of the study survey, we will give you a $50 Amazon gift card. And finally, in addition to" },
+      { start: 143, text: "the gift card, we are happy to offer you a link to a personalized virtual gallery featuring all the photos you’ve shared with us. With this link, you will be" },
+      { start: 152, text: "able to share this gallery with family and friends to showcase your hard work. What will you do during the study?" },
+      { start: 159, text: "Your time with us will begin the day you have your phone call with your contact." },
+      { start: 163, text: "Once we have guided you through your setup process over the phone, you will begin photographing the very next day." },
+      { start: 170, text: "As an example, if you schedule your phone call for Wednesday, then you will start taking photos on Thursday. During your scheduled phone call, we can also" },
+      { start: 178, text: "answer any questions you might have from this video. After the phone call, you will complete your startup survey. On" },
+      { start: 185, text: "day one of the study, you will begin your photo sessions and daily surveys." },
+      { start: 190, text: "Let’s briefly go into a little more depth on what your day will be like. To help you get started, we’ve selected your first prompt for day one. On the" },
+      { start: 198, text: "evening after your phone call, you’ll receive a preview of the prompt. Then, on the morning of day one, you’ll receive a text message with a link to" },
+      { start: 206, text: "complete it. That link will take you to your daily photo study page, which looks like this. You may notice that this page" },
+      { start: 214, text: "shows three prompt options. Beginning on day two, you’ll be able to choose from multiple prompt options, just like the" },
+      { start: 221, text: "example shown here. One important thing to keep in mind, once you’ve selected a prompt the evening before, you won’t be" },
+      { start: 228, text: "able to switch to a different prompt. As soon as you’ve completed your photo session, please submit your photo session report. Your thoughts and" },
+      { start: 236, text: "emotions can change quickly. So, completing the survey immediately afterward helps us capture your experience as accurately as possible." },
+      { start: 244, text: "You’ll answer a series of questions about your photo taking experience." },
+      { start: 249, text: "Some questions ask you to use a slider to rate how strongly you experienced different thoughts or feelings during your photo session. Simply drag the" },
+      { start: 257, text: "slider to the number that best matches your experience." },
+      { start: 261, text: "Other questions ask how much you agree or disagree with statements about your experience." },
+      { start: 266, text: "Again, use the slider to choose the response that best reflects how you felt." },
+      { start: 272, text: "You’ll also see a few multiple choice questions about your overall experience." },
+      { start: 277, text: "Just select the option that best describes your answer. There are no right or wrong answers." },
+      { start: 283, text: "Please answer as honestly as you can based on your experience today and try not to overthink your responses." },
+      { start: 290, text: "Later that evening, you will receive a text message inviting you to complete a brief reflection." },
+      { start: 295, text: "At the top of the page, choose the kind of background music you would like by tapping classical, ambient, or jazz. Tap" },
+      { start: 303, text: "off if you would rather complete the reflection without music. Next, scroll down to step one, choose a photo. Tap" },
+      { start: 311, text: "upload, then choose a photo from your phone’s photo library." },
+      { start: 315, text: "Select the photo from that day that you feel most drawn to or that best represents your response to the day’s photo prompt. After you select it, the photo will appear in the reflection." },
+      { start: 326, text: "Continue scrolling to step two. Look closely. Take a few moments to study your chosen photo and notice its colors, light, shapes, mood, and details." },
+      { start: 337, text: "Your photo will be displayed below this section so you can continue looking at it as you reflect. Then scroll to step three, reflection." },
+      { start: 347, text: "Tap inside the reflection box and type a short response about your photo. You may write about what the photo shows, why you took it, what you notice after" },
+      { start: 356, text: "looking more closely, or anything else you would like to share." },
+      { start: 361, text: "When you have finished writing, scroll to the bottom of the page and tap next page to continue." },
+      { start: 367, text: "Next, you’ll answer a series of questions using the same slider format you used earlier in the day. That covers everything you need to know before you" },
+      { start: 376, text: "begin. Over the course of the study, you’ll receive daily text messages to guide you through each step. You’ll" },
+      { start: 383, text: "complete a photo session, answer a brief survey about your experience, and finish each day with an evening reflection." },
+      { start: 390, text: "We’ll be here to support you along the way. So, if you ever have a question, don’t hesitate to reach out to your contact person. After you’ve completed" },
+      { start: 398, text: "the study, we’ll send you an end of study survey." },
+      { start: 402, text: "Then, about one month later, we’ll email you one final follow-up survey. As we mentioned earlier, you’ll also receive a" },
+      { start: 410, text: "link to your private online gallery so you can revisit the photos from your journey. On behalf of everyone at the Quality of Life Research Center at" },
+      { start: 418, text: "Claremont Graduate University, thank you for taking part in this study. We appreciate your time and participation and we look forward to learning from your experiences." }
+    ];
+
+    let activeTranscriptCueIndex = -1;
+    let transcriptCueElements = [];
+
+    function formatTranscriptTime(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = Math.floor(totalSeconds % 60);
+      return `${minutes}:${String(seconds).padStart(2, "0")}`;
+    }
+
+    function seekVideoToTranscriptCue(index) {
+      const cue = onboardingTranscriptCues[index];
+      if (!cue) return;
+
+      const seekAndPlay = () => {
+        try {
+          studyVideo.currentTime = cue.start;
+          setActiveTranscriptCue(index, { scroll: true, behavior: "smooth", force: true });
+          studyVideo.play().catch(() => {
+            // Native controls remain available if playback is blocked.
+          });
+        } catch (error) {
+          // Ignore a transient seek error while metadata finishes loading.
+        }
+      };
+
+      if (studyVideo.readyState >= 1) {
+        seekAndPlay();
+      } else {
+        studyVideo.addEventListener("loadedmetadata", seekAndPlay, { once: true });
+        studyVideo.load();
+      }
+    }
+
+    function renderOnboardingTranscript() {
+      videoTranscriptText.replaceChildren();
+
+      transcriptCueElements = onboardingTranscriptCues.map((cue, index) => {
+        const cueButton = document.createElement("button");
+        cueButton.className = "transcript-cue";
+        cueButton.type = "button";
+        cueButton.dataset.cueIndex = String(index);
+        cueButton.dataset.start = String(cue.start);
+        cueButton.textContent = cue.text;
+        cueButton.setAttribute("aria-label", `Jump to ${formatTranscriptTime(cue.start)}: ${cue.text}`);
+        cueButton.addEventListener("click", () => seekVideoToTranscriptCue(index));
+        videoTranscriptText.appendChild(cueButton);
+        return cueButton;
+      });
+    }
+
+    function getTranscriptCueIndex(currentTime) {
+      let low = 0;
+      let high = onboardingTranscriptCues.length - 1;
+      let match = 0;
+
+      while (low <= high) {
+        const middle = Math.floor((low + high) / 2);
+        if (onboardingTranscriptCues[middle].start <= currentTime + 0.04) {
+          match = middle;
+          low = middle + 1;
+        } else {
+          high = middle - 1;
+        }
+      }
+
+      return match;
+    }
+
+    function scrollTranscriptCueIntoView(cueElement, behavior = "smooth") {
+      if (!cueElement || videoTranscriptToggle.getAttribute("aria-expanded") !== "true") return;
+
+      const targetTop = cueElement.offsetTop
+        - (videoTranscript.clientHeight / 2)
+        + (cueElement.offsetHeight / 2);
+
+      videoTranscript.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior
+      });
+    }
+
+    function setActiveTranscriptCue(index, { scroll = true, behavior = "smooth", force = false } = {}) {
+      if (!force && index === activeTranscriptCueIndex) return;
+
+      transcriptCueElements.forEach((cueElement, cueIndex) => {
+        const isActive = cueIndex === index;
+        cueElement.classList.toggle("is-active", isActive);
+        if (isActive) {
+          cueElement.setAttribute("aria-current", "true");
+        } else {
+          cueElement.removeAttribute("aria-current");
+        }
+      });
+
+      activeTranscriptCueIndex = index;
+
+      if (scroll) {
+        scrollTranscriptCueIntoView(transcriptCueElements[index], behavior);
+      }
+    }
+
+    function syncTranscriptToVideo({ force = false, behavior = "smooth" } = {}) {
+      const cueIndex = getTranscriptCueIndex(studyVideo.currentTime || 0);
+      setActiveTranscriptCue(cueIndex, { scroll: true, behavior, force });
+    }
+
+
+    function setTranscriptExpanded(expanded, { scroll = true } = {}) {
+      videoTranscriptToggle.setAttribute("aria-expanded", String(expanded));
+      videoTranscriptPanel.classList.toggle("is-open", expanded);
+      videoTranscriptPanel.setAttribute("aria-hidden", String(!expanded));
+      videoTranscriptPanel.inert = !expanded;
+
+      if (expanded && scroll) {
+        requestAnimationFrame(() => {
+          scrollTranscriptCueIntoView(transcriptCueElements[activeTranscriptCueIndex], "smooth");
+        });
+      }
+    }
+
+    videoTranscriptToggle.addEventListener("click", () => {
+      const isExpanded = videoTranscriptToggle.getAttribute("aria-expanded") === "true";
+      setTranscriptExpanded(!isExpanded);
+    });
+
+    renderOnboardingTranscript();
+    setActiveTranscriptCue(0, { scroll: false, behavior: "auto", force: true });
+    setTranscriptExpanded(false, { scroll: false });
+
+    studyVideo.addEventListener("timeupdate", () => syncTranscriptToVideo());
+    studyVideo.addEventListener("seeking", () => syncTranscriptToVideo({ force: true, behavior: "auto" }));
+    studyVideo.addEventListener("seeked", () => syncTranscriptToVideo({ force: true, behavior: "smooth" }));
+    studyVideo.addEventListener("loadedmetadata", () => syncTranscriptToVideo({ force: true, behavior: "auto" }));
+
+    function openVideoModal() {
+      videoModal.classList.add("open");
+      videoModal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+
+      try {
+        studyVideo.currentTime = 0;
+      } catch (error) {
+        // The video metadata may not be available yet.
+      }
+      videoTranscript.scrollTop = 0;
+      setTranscriptExpanded(false, { scroll: false });
+      setActiveTranscriptCue(0, { scroll: false, behavior: "auto", force: true });
+      syncTranscriptToVideo({ force: true, behavior: "auto" });
+
+      studyVideo.play().catch(() => {
+        // Native controls remain available if autoplay is blocked.
+      });
+    }
+
+    function closeVideoModal() {
+      videoModal.classList.remove("open");
+      videoModal.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      studyVideo.pause();
+
+      try {
+        studyVideo.currentTime = 0;
+      } catch (error) {
+        // Ignore reset errors while the video is still loading.
+      }
+      videoTranscript.scrollTop = 0;
+      setTranscriptExpanded(false, { scroll: false });
+      setActiveTranscriptCue(0, { scroll: false, behavior: "auto", force: true });
+    }
+
+    watchVideoButton.addEventListener("click", event => {
+      event.preventDefault();
+      openVideoModal();
+    });
+
+    modalClose.addEventListener("click", closeVideoModal);
+
+    videoModal.addEventListener("click", event => {
+      if (event.target === videoModal) closeVideoModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && videoModal.classList.contains("open")) closeVideoModal();
+    });
+
+
+    const galleryItems = [
+      {
+        type: "video",
+        src: "https://www.dropbox.com/scl/fi/7fkyecnt3bsbj2o9ibgwz/Revized-Virtual-Gallery-Demo-Vid-2.mp4?rlkey=n61vl6uc9umfrqtgasq47x208&raw=1",
+        label: "Video preview of a personalized virtual photography gallery"
+      },
+      {
+        type: "image",
+        src: "https://www.dropbox.com/scl/fi/j0k3b1165qjgbx5lmxipz/Screenshot-2026-08-05-at-11.36.03-AM.png?rlkey=45t05j0lnudz0y6qwfd8nvb1c&st=0vvhhfow&raw=1",
+        label: "Screenshot showing an example view inside the virtual photography gallery"
+      },
+      {
+        type: "image",
+        src: "https://www.dropbox.com/scl/fi/qz2lr2u24e6qgp6yhmy0e/Screenshot-2026-08-05-at-11.36.47-AM.png?rlkey=5rxgsxec5hdvmospeere5ljpy&st=el1jm6ph&raw=1",
+        label: "A second screenshot showing an example view inside the virtual photography gallery"
+      }
+    ];
+
+    const gallerySlides = Array.from(document.querySelectorAll(".gallery-slide"));
+    const galleryThumbnails = Array.from(document.querySelectorAll(".gallery-thumbnail"));
+    const galleryCounter = document.getElementById("galleryCounter");
+    const galleryPreviewVideo = document.querySelector(".gallery-preview-video");
+    const galleryThumbnailVideo = document.querySelector("[data-static-video-thumbnail]");
+    const galleryOpenButton = document.getElementById("galleryOpenButton");
+    const galleryLightbox = document.getElementById("galleryLightbox");
+    const galleryLightboxMedia = document.getElementById("galleryLightboxMedia");
+    const galleryLightboxCounter = document.getElementById("galleryLightboxCounter");
+    const galleryLightboxClose = document.getElementById("galleryLightboxClose");
+    const galleryLightboxPrev = document.getElementById("galleryLightboxPrev");
+    const galleryLightboxNext = document.getElementById("galleryLightboxNext");
+
+    if (galleryThumbnailVideo) {
+      const freezeGalleryThumbnail = () => {
+        galleryThumbnailVideo.pause();
+        if (galleryThumbnailVideo.readyState >= 2) {
+          try {
+            const stillTime = Number.isFinite(galleryThumbnailVideo.duration)
+              ? Math.min(0.15, Math.max(0, galleryThumbnailVideo.duration - 0.01))
+              : 0.15;
+            if (Math.abs(galleryThumbnailVideo.currentTime - stillTime) > 0.02) {
+              galleryThumbnailVideo.currentTime = stillTime;
+            }
+          } catch (error) {
+            // The first decoded frame will remain visible if seeking is unavailable.
+          }
+        }
+      };
+
+      galleryThumbnailVideo.addEventListener("loadeddata", freezeGalleryThumbnail, { once: true });
+      galleryThumbnailVideo.addEventListener("seeked", () => galleryThumbnailVideo.pause());
+      galleryThumbnailVideo.pause();
+    }
+
+    let galleryIndex = 0;
+    let lightboxIndex = 0;
+    let galleryReturnFocus = null;
+
+    function normalizedGalleryIndex(index) {
+      return (index + galleryItems.length) % galleryItems.length;
+    }
+
+    function showGalleryItem(index) {
+      galleryIndex = normalizedGalleryIndex(index);
+
+      gallerySlides.forEach((slide, slideIndex) => {
+        const active = slideIndex === galleryIndex;
+        slide.classList.toggle("is-active", active);
+        slide.setAttribute("aria-hidden", String(!active));
+      });
+
+      galleryThumbnails.forEach((thumbnail, thumbnailIndex) => {
+        const active = thumbnailIndex === galleryIndex;
+        thumbnail.classList.toggle("is-active", active);
+        if (active) {
+          thumbnail.setAttribute("aria-current", "true");
+        } else {
+          thumbnail.removeAttribute("aria-current");
+        }
+      });
+
+      galleryCounter.textContent = `${galleryIndex + 1} of ${galleryItems.length}`;
+
+      if (galleryPreviewVideo) {
+        if (galleryIndex === 0 && !galleryLightbox.classList.contains("open")) {
+          galleryPreviewVideo.play().catch(() => {});
+        } else {
+          galleryPreviewVideo.pause();
+        }
+      }
+    }
+
+    function renderLightboxItem(index) {
+      lightboxIndex = normalizedGalleryIndex(index);
+      const item = galleryItems[lightboxIndex];
+      galleryLightboxMedia.replaceChildren();
+
+      if (item.type === "video") {
+        const video = document.createElement("video");
+        video.src = item.src;
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.controls = true;
+        video.setAttribute("aria-label", item.label);
+        galleryLightboxMedia.appendChild(video);
+        video.play().catch(() => {});
+      } else {
+        const image = document.createElement("img");
+        image.src = item.src;
+        image.alt = item.label;
+        galleryLightboxMedia.appendChild(image);
+      }
+
+      galleryLightboxCounter.textContent = `${lightboxIndex + 1} of ${galleryItems.length}`;
+    }
+
+    function openGalleryLightbox(index) {
+      galleryReturnFocus = document.activeElement;
+      if (galleryPreviewVideo) galleryPreviewVideo.pause();
+      renderLightboxItem(index);
+      galleryLightbox.classList.add("open");
+      galleryLightbox.setAttribute("aria-hidden", "false");
+      document.body.classList.add("gallery-lightbox-open");
+      galleryLightboxClose.focus();
+    }
+
+    function closeGalleryLightbox() {
+      galleryLightbox.classList.remove("open");
+      galleryLightbox.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("gallery-lightbox-open");
+      galleryLightboxMedia.replaceChildren();
+      showGalleryItem(galleryIndex);
+      if (galleryReturnFocus && typeof galleryReturnFocus.focus === "function") {
+        galleryReturnFocus.focus();
+      }
+    }
+
+    galleryOpenButton.addEventListener("click", () => openGalleryLightbox(galleryIndex));
+
+    galleryThumbnails.forEach((thumbnail, thumbnailIndex) => {
+      thumbnail.addEventListener("click", () => showGalleryItem(thumbnailIndex));
+    });
+
+    galleryLightboxPrev.addEventListener("click", () => renderLightboxItem(lightboxIndex - 1));
+    galleryLightboxNext.addEventListener("click", () => renderLightboxItem(lightboxIndex + 1));
+    galleryLightboxClose.addEventListener("click", closeGalleryLightbox);
+
+    galleryLightbox.addEventListener("click", event => {
+      if (event.target === galleryLightbox) closeGalleryLightbox();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (!galleryLightbox.classList.contains("open")) return;
+
+      if (event.key === "Escape") {
+        closeGalleryLightbox();
+      } else if (event.key === "ArrowLeft") {
+        renderLightboxItem(lightboxIndex - 1);
+      } else if (event.key === "ArrowRight") {
+        renderLightboxItem(lightboxIndex + 1);
+      }
+    });
+
+    showGalleryItem(0);
+
+    const practiceLockView = document.getElementById("practiceLockView");
+    const practiceMessagesView = document.getElementById("practiceMessagesView");
+    const practiceSurveyView = document.getElementById("practiceSurveyView");
+    const practiceNotification = document.getElementById("practiceNotification");
+    const openPracticeSurvey = document.getElementById("openPracticeSurvey");
+    const closePracticeSurvey = document.getElementById("closePracticeSurvey");
+    const practiceSurveyFrame = document.getElementById("practiceSurveyFrame");
+    const practiceDemo = document.getElementById("practiceDemo");
+    const startPracticeReflection = document.getElementById("startPracticeReflection");
+    const restartPracticeReflection = document.getElementById("restartPracticeReflection");
+    const practiceSurveyUrl = practiceSurveyFrame.dataset.src;
+
+    function setPracticeView(view) {
+      const views = {
+        lock: practiceLockView,
+        messages: practiceMessagesView,
+        survey: practiceSurveyView
+      };
+
+      Object.entries(views).forEach(([name, element]) => {
+        const active = name === view;
+        element.classList.toggle("is-active", active);
+        element.setAttribute("aria-hidden", String(!active));
+      });
+    }
+
+    function startPractice() {
+      practiceDemo.classList.remove("is-idle");
+      practiceDemo.classList.add("is-started");
+      practiceDemo.classList.remove("notification-ready");
+      restartPracticeReflection.hidden = false;
+      setPracticeView("lock");
+
+      window.setTimeout(() => {
+        practiceDemo.classList.add("notification-ready");
+      }, 500);
+    }
+
+    function resetPractice() {
+      practiceDemo.classList.remove("is-started", "notification-ready");
+      practiceDemo.classList.add("is-idle");
+      restartPracticeReflection.hidden = true;
+      setPracticeView("lock");
+      practiceSurveyFrame.src = practiceSurveyUrl + "&practice_restart=" + Date.now();
+    }
+
+    startPracticeReflection.addEventListener("click", () => {
+      startPractice();
+      practiceDemo.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    restartPracticeReflection.addEventListener("click", () => {
+      resetPractice();
+      practiceDemo.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    practiceNotification.addEventListener("click", () => {
+      setPracticeView("messages");
+    });
+
+    openPracticeSurvey.addEventListener("click", (event) => {
+      event.preventDefault();
+      setPracticeView("survey");
+    });
+
+    closePracticeSurvey.addEventListener("click", () => {
+      setPracticeView("messages");
+    });
+
+  </script>
+</body>
+</html>
